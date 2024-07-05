@@ -6,7 +6,7 @@ class Venue(models.Model):
     address = models.CharField(max_length=300)
     city = models.CharField(max_length=100)
     phone = models.CharField('Phone Number', max_length=10)
-    #zip_code = models.CharField('Zip Code', max_length=10, blank=True)
+    zip_code = models.CharField('Zip Code', max_length=10, blank=True)
     web = models.URLField('Website address', blank=True)
     email = models.EmailField('Email', blank=True)
 
