@@ -3,8 +3,21 @@
 {% block content %}
 
 <center>
-<h1>Venue</h1>
-    {{ venue }}
+    <div class='card'>
+        <div class="card-header">
+            Venue
+        </div>
+        <div class='card-body'>
+            <h5 class='card-title'>{{ venue.name }}</h5>
+            <p class='card-text'>{{ venue.address }}</p>
+            <p class='card-text'>{{ venue.city }}</p>
+            <p class='card-text'>{{ venue.phone }}</p>
+            <p class='card-text'>{{ venue.zip_code }}</p>
+            <p><a href='{{ venue.web }}'>{{ venue.web }}</a></p>
+            <p class='card-text'>{{ venue.email }}</p>
+        </div>
+    </div>
+<br/>
 
 <br/><br/><br/>
 Induna (c) {{ current }}

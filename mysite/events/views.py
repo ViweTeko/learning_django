@@ -55,3 +55,14 @@ def list_venues(request):
     venue_list = Venue.objects.all()
     return render(request, 'events/venue.html',
     {'venue_list': venue_list})
+
+def search_venues(request):
+    if request.POST:
+        searched = request.POST['searched']
+        venues = Venue.objects.filter(name__icontains=searched)
+        return render(request, 'events/search_venues.html',
+        {'searched': searched,
+        'venues': venues})
+    else:
+        return render(request, 'events/search_venues.html',
+        {})
