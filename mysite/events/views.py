@@ -1,6 +1,6 @@
 """ This script shows the views of the events app """
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
@@ -127,3 +127,12 @@ def delete_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     venue.delete()
     return redirect('list-venues')
+
+""" This will generate Text File List"""
+def venue_text(request):
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="venue_list.txt"'
+    venues = Venue.objects.all()
+    for venue in venues:
+        response.write(venue.name + '\n')
+    return response
