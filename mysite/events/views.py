@@ -31,7 +31,7 @@ def home(request, year=datetime.now().year, month=datetime.now() .strftime('%B')
 
 """This is the list of events"""
 def all_events(request):
-    event_list = Event.objects.all()
+    event_list = Event.objects.all().order_by('event_date')
     return render(request, 'events/event_list.html',
     {'event_list': event_list})
 
@@ -123,7 +123,7 @@ def delete_event(request, event_id):
     return redirect('list-events')
 
 """This deletes a venue"""
-def delete_event(request, venue_id):
+def delete_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     venue.delete()
     return redirect('list-venues')
