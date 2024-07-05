@@ -1,0 +1,22 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<center>
+<h1>Venues...</h1>
+<br/>
+<table class='table table-striped-hover table-bordered'>
+{% for venue in venue_list %}
+    <tr>
+        <td>
+            <a href="{% url 'show-venue' venue.id %}">
+                {{ venue.name }}</a>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+<br/><br/><br/>
+Induna (c) {{ current }}
+</center>
+
+{% endblock %}
