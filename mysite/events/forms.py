@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Venue
+from .models import Venue, Event
 
 class VenueForm(ModelForm):
     class Meta:
@@ -25,3 +25,24 @@ class VenueForm(ModelForm):
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
         }
 
+
+class EventForm(ModelForm):
+    class Meta:
+        model = Event
+        fields = '__all__'
+        labels = {
+            'name': '',
+            'event_date': 'YYY-MM-DD HH:MM',
+            'venue': 'Venue',
+            'manager': 'Manager',
+            'attendees': 'Attendees',
+            'description': '',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Name'}),
+            'event_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Date'}),
+            'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Venue'}),
+            'manager': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Manager'}),
+            'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Attendees'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+        }
