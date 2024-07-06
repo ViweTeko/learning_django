@@ -1,11 +1,18 @@
 """ This script shows the views of the events app """
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
+import csv
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
+
 
 """ This is the home page """
 def home(request, year=datetime.now().year, month=datetime.now() .strftime('%B')):
@@ -136,3 +143,42 @@ def venue_text(request):
     for venue in venues:
         response.write(venue.name + '\n')
     return response
+
+""" This will generate Comma Separated Values (CSV) file"""
+def venue_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="venue_list.csv"'
+    writer = csv.writer(response)
+   
+    venues = Venue.objects.all()
+    writer.writerow(['Venue Name', 'Address', 'Zip Code', 'Web Address', 'Phone'])
+    for venue in venues:
+        writer.writerow(venue.name, venue.address, venue.zip_code, venue.web, venue.phone)
+    return response
+
+def venue_pdf(request):
+    buf = io.BytesIO()
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+    textobj = c.beginText()
+    textobj.setTextOrigin(inch, inch)
+    textobj.setFont('Helvetica', 14)
+    doc = SimpleDocTemplate(buf, pagesize=letter, rightMargin=72, leftMargin=72,
+    topMargin=72, bottomMargin=18)
+    venues = Venue.objects.all()
+    lines = []
+    for venue in venues:
+        lines.append(venue.name)
+        lines.append(venue.address)
+        lines.append(venue.zip_code)
+        lines.append(venue.phone)
+        lines.append(venue.web)
+        lines.append(venue.email)
+        lines.append(' ')
+
+    for line in lines:
+        textobj.textLine(line)
+    c.drawText(textobj)
+    c.showPage()
+    c.save()
+    buf.seek(0)
+    return FileReponse(buf, as_attachment=True, filename='venue_list.pdf')
