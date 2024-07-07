@@ -12,7 +12,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
-
+from django.core.paginator import Paginator
 
 """ This is the home page """
 def home(request, year=datetime.now().year, month=datetime.now() .strftime('%B')):
@@ -66,8 +66,13 @@ def show_venue(request, venue_id):
 """ This shows a list of venues """
 def list_venues(request):
     venue_list = Venue.objects.all()
+
+    p = Paginator(Venue.objects.all(), 10)
+    page = request.GET.get('page')
+    venue_page = p.get_page(page)
     return render(request, 'events/venue.html',
-    {'venue_list': venue_list})
+    {'venue_list': venue_list,
+    'venue_page': venue_page})
 
 """ This searches for a venue """
 def search_venues(request):

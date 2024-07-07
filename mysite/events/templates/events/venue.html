@@ -6,7 +6,7 @@
 <h1>Venues...</h1>
 <br/>
 <table class='table table-striped-hover table-bordered'>
-{% for venue in venue_list %}
+{% for venue in venue_page %}
     <tr>
         <td>
             <a href="{% url 'show-venue' venue.id %}">
@@ -25,6 +25,18 @@
     </tr>
 {% endfor %}
 </table>
+<br/><br/><br/><br/><br/>
+{% if venue_page.has_previous %}
+    <a href="?page=1">&laquo First</a>
+    <a href="?page={{ venue_page.previous_page_number }}">Previous</a>
+{% endif %}
+
+Page {{ venue_page.number }} of {{ venue_page.paginator.num_pages }}.
+
+{% if venue_page.has_next %}
+    <a href="?page={{ venue_page.next_page_number }}">Next</a>
+    <a href="?page={{ venue_page.paginator.num_pages }}">Last &raquo;</a>
+{% endif %}
 <br/><br/><br/>
 Induna (c) {{ current }}
 </center>

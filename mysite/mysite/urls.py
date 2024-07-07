@@ -21,3 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('events.urls')),
 ]
+
+admin.site.site_header = "Viwe Teko Admin"
+admin.site.site_title = "Viwe Teko Admin Portal"
+admin.site.index_title = "Welcome to Viwe Teko Portal"
