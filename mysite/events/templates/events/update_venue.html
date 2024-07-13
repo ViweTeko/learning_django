@@ -5,8 +5,7 @@
 {% if user.is_authenticated %}
 <center>
 <h1>Update Venue</h1>
-    Logged In User:  {{ user }}
-    <br/>
+    
     
 <br/>
 <form method="POST">
@@ -20,6 +19,8 @@
 {% else %}
     <h1>Sorry! You need to login first</h1>
     Login <a href="{% url 'login' %}">Here</a>
+    Logged In User:  {{ user }}
+    <br/>
 {% endif %}
 
 <br/><br/><br/>

@@ -161,6 +161,7 @@ def venue_csv(request):
         writer.writerow(venue.name, venue.address, venue.zip_code, venue.web, venue.phone)
     return response
 
+"""This will generate PDF file"""
 def venue_pdf(request):
     buf = io.BytesIO()
     c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
