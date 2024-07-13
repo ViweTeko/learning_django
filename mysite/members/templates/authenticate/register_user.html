@@ -12,24 +12,23 @@
 
 
 <center>
-<h1>Register</h1>
+    <div class="shadow p-4 mb-5 bg-body rounded">
+    <h1>Register</h1>
+        <br/>
 
 
-
-    <form action="{% url 'register_user' %}" method=POST>
-        {% csrf_token %}
-        {{ form.as_p }}
+        <form action="{% url 'register_user' %}" method=POST>
+            {% csrf_token %}
+            {{ form.as_p }}
         
             <input type="submit" 
             value="Submit" class="btn btn-secondary">
           
         </form>
-        
-
-As of {{ time }}
+    </div>    
 <br></br>
 
-
+    
 <br/><br/><br/>
 Induna (c) {{ current }}
 </center>
