@@ -2,6 +2,9 @@
 
 {% block content %}
 
+{% if user.is_authenticated %}
+
+
 <center>
 <h1>Update Event</h1>
 <br/>
@@ -13,6 +16,11 @@
     class="btn btn-outline-secondary">
 </form>
 
+
+{% else %}
+    <h1>Sorry! You need to login first</h1>
+    Login <a href="{% url 'login' %}">Here</a>
+{% endif %}
 
 <br/><br/><br/>
 Induna (c) {{ current }}
