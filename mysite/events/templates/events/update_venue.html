@@ -5,6 +5,9 @@
 {% if user.is_authenticated %}
 <center>
 <h1>Update Venue</h1>
+    Logged In User:  {{ user }}
+    <br/>
+    
 <br/>
 <form method="POST">
     {% csrf_token %}
