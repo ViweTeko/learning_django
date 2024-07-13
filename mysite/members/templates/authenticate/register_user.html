@@ -1,0 +1,37 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Please correct the error below.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+    
+{% endif %}
+
+
+<center>
+<h1>Register</h1>
+
+
+
+    <form action="{% url 'register_user' %}" method=POST>
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+            <input type="submit" 
+            value="Submit" class="btn btn-secondary">
+          
+        </form>
+        
+
+As of {{ time }}
+<br></br>
+
+
+<br/><br/><br/>
+Induna (c) {{ current }}
+</center>
+
+{% endblock %}
