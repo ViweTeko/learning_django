@@ -9,6 +9,7 @@ class Venue(models.Model):
     zip_code = models.CharField('Zip Code', max_length=10, blank=True)
     web = models.URLField('Website address', blank=True)
     email = models.EmailField('Email', blank=True)
+    owner = models.IntegerField('Venue Owner', blank=False, default=1)
 
     def __str__(self):
         return self.name
