@@ -147,8 +147,13 @@ def update_event(request, event_id):
 """This deletes an event"""
 def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
-    event.delete()
-    return redirect('list-events')
+    if request.user == event.manager:
+        event.delete()
+        messages.success(request, 'Event deleted successfully!')
+        return redirect('list-events')
+    else:
+        messages.success(request, 'You are not authorized to delete this event!')
+        return redirect('list-events')
 
 """This deletes a venue"""
 def delete_venue(request, venue_id):
