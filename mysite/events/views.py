@@ -13,6 +13,10 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, TableStyle
 from django.core.paginator import Paginator
+from django.contrib import messages
+from django.contrib.auth.models import User
+
+# HOME
 
 """ This is the home page """
 def home(request, year=datetime.now().year, month=datetime.now() .strftime('%B')):
@@ -58,8 +62,10 @@ def add_venue(request):
 """ This shows a venue """
 def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
+    venue_owner = User.objects.get(pk=venue.owner)
     return render(request, 'events/show_venue.html',
-    {'venue': venue})
+    {'venue': venue,
+    'venue_owner': venue_owner})
 
 """ This shows a list of venues """
 def list_venues(request):
