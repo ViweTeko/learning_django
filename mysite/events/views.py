@@ -5,7 +5,7 @@ import calendar
 from calendar import HTMLCalendar
 from datetime import datetime
 from .models import Event, Venue
-from .forms import VenueForm, EventForm
+from .forms import VenueForm, EventForm, AdminEventForm
 import csv
 import io
 from reportlab.pdfgen import canvas
@@ -36,11 +36,7 @@ def home(request, year=datetime.now().year, month=datetime.now() .strftime('%B')
         "time": time,
     })
 
-"""This is the list of events"""
-def all_events(request):
-    event_list = Event.objects.all().order_by('event_date')
-    return render(request, 'events/event_list.html',
-    {'event_list': event_list})
+ # VENUES
 
 """ This is adds a venue """
 def add_venue(request):
@@ -102,17 +98,35 @@ def update_venue(request, venue_id):
     {'venue': venue,
     'form': form})
 
+# EVENTS
+"""This is the list of events"""
+def all_events(request):
+    event_list = Event.objects.all().order_by('event_date')
+    return render(request, 'events/event_list.html',
+    {'event_list': event_list})
 
 """ This adds an event """
 def add_event(request):
     submitted = False
     if request.method == 'POST':
-        form = EventForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/add_event?submitted=True')
+        if request.user.is_superuser:
+            form = AdminEventForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/add_event?submitted=True')
+        else:
+            form = EventForm(request.POST)
+            if form.is_valid():
+                event = form.save(commit=False)
+                event.manager = request.user
+                event.save()
+                return HttpResponseRedirect('/add_event?submitted=True')
     else:
-        form = EventForm()
+        if request.user.is_superuser:
+            form = AdminEventForm()
+        else:
+            form = EventForm()
+
         if 'submitted' in request.GET:
             submitted = True
     return render(request, 'events/add_event.html',
@@ -142,6 +156,7 @@ def delete_venue(request, venue_id):
     venue.delete()
     return redirect('list-venues')
 
+# VENUE Downloads
 """ This will generate Text File List"""
 def venue_text(request):
     response = HttpResponse(content_type='text/plain')

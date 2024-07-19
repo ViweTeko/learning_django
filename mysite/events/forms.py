@@ -26,7 +26,8 @@ class VenueForm(ModelForm):
         }
 
 
-class EventForm(ModelForm):
+class AdminEventForm(ModelForm):
+    """ This is for Admin SuperUser event form"""
     class Meta:
         model = Event
         fields = '__all__'
@@ -43,6 +44,26 @@ class EventForm(ModelForm):
             'event_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Date'}),
             'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Venue'}),
             'manager': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Manager'}),
+            'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Attendees'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+        }
+
+class EventForm(ModelForm):
+    """ This class is the event form for ordinary users"""
+    class Meta:
+        model = Event
+        fields = '__all__'
+        labels = {
+            'name': '',
+            'event_date': 'YYY-MM-DD HH:MM',
+            'venue': 'Venue',
+            'attendees': 'Attendees',
+            'description': '',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Name'}),
+            'event_date': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Event Date'}),
+            'venue': forms.Select(attrs={'class': 'form-select', 'placeholder': 'Venue'}),
             'attendees': forms.SelectMultiple(attrs={'class': 'form-control', 'placeholder': 'Attendees'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
         }
