@@ -167,6 +167,7 @@ def delete_venue(request, venue_id):
     venue.delete()
     return redirect('list-venues')
 
+""" This shows my events """
 def my_events(request):
     if request.user.is_authenticated:
         me = request.user.id
@@ -176,6 +177,19 @@ def my_events(request):
     else:
         messages.success(request, 'You are not authorized to view this page!')
         return redirect('home')
+
+""" This searches for an event """
+def search_events(request):
+    if request.POST:
+        searched = request.POST['searched']
+        events = Events.objects.filter(name__icontains=searched)
+        return render(request, 'events/search_events.html',
+        {'searched': searched,
+        'events': events})
+    else:
+        return render(request, 'events/search_events.html',
+        {})
+
 
 # VENUE Downloads
 """ This will generate Text File List"""

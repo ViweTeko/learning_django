@@ -1,0 +1,24 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+
+<center>
+    {% if searched %}
+        <h1>You searched for... {{ searched }}</h1>
+        <br/>
+        {% for event in events %}
+        <br/>
+            {{ event.name }}
+        {% endfor %}
+    {% else %}
+        <h1>Hello! You forgot to search for an Event</h1>
+    {% endif %}
+
+
+
+
+<br/><br/><br/>
+Induna (c) {{ current }}
+</center>
+
+{% endblock %}
