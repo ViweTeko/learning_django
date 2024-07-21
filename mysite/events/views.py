@@ -64,7 +64,7 @@ def show_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     venue_owner = User.objects.get(pk=venue.owner)
     return render(request, 'events/show_venue.html',
-    {'venue': venue,
+    {'venue': venue,   
     'venue_owner': venue_owner})
 
 """ This shows a list of venues """
@@ -166,6 +166,16 @@ def delete_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     venue.delete()
     return redirect('list-venues')
+
+def my_events(request):
+    if request.user.is_authenticated:
+        me = request.user.id
+        events = Event.objects.filter(attendees=me)
+        return render(request, 'events/my_events.html',
+        {'events': events})
+    else:
+        messages.success(request, 'You are not authorized to view this page!')
+        return redirect('home')
 
 # VENUE Downloads
 """ This will generate Text File List"""
