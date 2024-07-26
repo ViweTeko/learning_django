@@ -8,14 +8,29 @@
             Venue
         </div>
         <div class='card-body'>
+            
             <h5 class='card-title'>{{ venue.name }}</h5>
+            {% if venue.address %}
             <p class='card-text'>{{ venue.address }}</p>
+            {% endif %}
+            {% if venue.city %}
             <p class='card-text'>{{ venue.city }}</p>
+            {% endif %}
+            {% if venue.phone %}
             <p class='card-text'>{{ venue.phone }}</p>
+            {% endif %}
+            {% if venue.zip_code %}
             <p class='card-text'>{{ venue.zip_code }}</p>
+            {% endif %}
+            {% if venue.web %}
             <p>Website: <a href='{{ venue.web }}'><a href="{{ venue.web }}">{{ venue.web }}</a></p>
+            {% endif %}
+            {% if venue.email %}
             <p class='card-text'>E-mail: {{ venue.email }}</p>
+            {% endif %}
+            {% if venue.owner %}
             <p class='card-text'>Owner: {{ venue_owner }}</p>
+            {% endif %}
         </div>
     </div>
 <br/>
