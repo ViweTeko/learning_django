@@ -8,6 +8,15 @@
 As of {{ time }}
 <br></br>
 {{ cal|safe }}
+<br/><br/>
+    <h3>Events this month...</h3>
+    {% if event_list %}
+        {% for event in event_list %}
+            <p>{{ event.name }} - {{ event.event_date }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No events this month</p>
+    {% endif %}
 
 <br/><br/><br/>
 Induna (c) {{ current }}
