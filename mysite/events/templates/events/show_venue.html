@@ -31,6 +31,10 @@
             {% if venue.owner %}
             <p class='card-text'>Owner: {{ venue_owner }}</p>
             {% endif %}
+
+            {% if venue.venue_image %}
+                <img src='{{ venue.venue_image.url }}'>
+            {% endif %}
         </div>
     </div>
 <br/>

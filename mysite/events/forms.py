@@ -14,6 +14,7 @@ class VenueForm(ModelForm):
             'zip_code': '',
             'web': '',
             'email': '',
+            'venue_image': '',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Venue Name'}),
