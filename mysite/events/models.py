@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 class Venue(models.Model):
     name = models.CharField('Venue Name', max_length=100)
@@ -29,8 +30,6 @@ class Event(models.Model):
     name = models.CharField('Event Name', max_length=100)
     event_date = models.DateTimeField('Event Date')
     venue = models.ForeignKey(Venue, blank=True, on_delete=models.CASCADE)
-    #host = models.CharField(max_length=120)
-    #venue = models.CharField(max_length=120)
     manager = models.ForeignKey(User, blank=True, null=True,
     on_delete=models.SET_NULL)
     description = models.TextField(blank=True)
@@ -39,3 +38,14 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def Days_till(self):
+        today = date.today()
+        day_of = self.event_date.date()  
+        days_till = day_of - today
+
+        days_till_stripped = str(days_till).split(',', 1)[0]
+        if int(days_till) < 0:
+            return print(f'{days_till_stripped} days past')
+
+        return print(f'{days_till_stripped} days left')
