@@ -44,8 +44,11 @@ class Event(models.Model):
         day_of = self.event_date.date()  
         days_till = day_of - today
 
-        days_till_stripped = str(days_till).split(',', 1)[0]
-        if int(days_till) < 0:
-            return print(f'{days_till_stripped} days past')
+        # days_till_stripped = str(days_till).split(',', 1)[0]
+        days_till_stripped = days_till.days
 
-        return print(f'{days_till_stripped} days left')
+        if days_till_stripped < 0:
+            fix_day = days_till_stripped * -1
+            return (f'{fix_day} days past')
+
+        return (f'{days_till_stripped} days left')
