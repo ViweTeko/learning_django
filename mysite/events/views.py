@@ -253,8 +253,16 @@ def venue_pdf(request):
 def admin_approval(request):
     event_list = Event.objects.all().order_by('-event_date')
     if request.user.is_superuser:
-        return render(request, 'events/admin_approval.html',
-        {'event_list': event_list})
+        if request.method == 'POST':
+            for event in event_list:
+                if request.POST.get('approved' + str(event.id)):
+                    event.approved = True
+                    event.save()
+                    messages.success(request, 'Event has been approved')
+                    return redirect('list-events')
+                else:
+                    return render(request, 'events/admin_approval.html',
+                    {'event_list': event_list})
     else:
         messages.success(request, 'You are not authorized to view this page!')
         return redirect('home')
