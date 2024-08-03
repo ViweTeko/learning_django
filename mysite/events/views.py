@@ -249,3 +249,14 @@ def venue_pdf(request):
     c.save()
     buf.seek(0)
     return FileReponse(buf, as_attachment=True, filename='venue_list.pdf')
+
+def admin_approval(request):
+    event_list = Event.objects.all().order_by('-event_date')
+    if request.user.is_superuser:
+        return render(request, 'events/admin_approval.html',
+        {'event_list': event_list})
+    else:
+        messages.success(request, 'You are not authorized to view this page!')
+        return redirect('home')
+
+    return render(request, 'events/admin_approval.html')

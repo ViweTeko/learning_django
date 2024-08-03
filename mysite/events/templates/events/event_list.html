@@ -19,6 +19,7 @@
             <li>Days Till Event: {{ event.Days_till }}</li>
             <li>Manager: {{ event.manager }}</li>
             <li>Description: {{ event.description }}</li>
+            <li>Approved: {{ event.approved }}</li>
             <li>Attendees:<br/>
             {% for user in event.attendees.all %}
             &emsp;{{ user }} <br/>
