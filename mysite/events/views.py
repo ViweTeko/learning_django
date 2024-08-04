@@ -251,6 +251,7 @@ def venue_pdf(request):
     return FileReponse(buf, as_attachment=True, filename='venue_list.pdf')
 
 def admin_approval(request):
+    venue_list = Venue.objects.all()
     event_count = Event.objects.all().count()
     venue_count = Venue.objects.all().count()
     user_count = User.objects.all().count()
@@ -268,9 +269,32 @@ def admin_approval(request):
                     {'event_list': event_list,
                     "event_count": event_count,
                     "venue_count": venue_count,
-                    "user_count": user_count,})
+                    "user_count": user_count,
+                    "venue_list": venue_list})
     else:
         messages.success(request, 'You are not authorized to view this page!')
         return redirect('home')
 
-    return render(request, 'events/admin_approval.html')
+    return render(request, 'events/admin_approval.html',
+                    {'event_list': event_list,
+                    "event_count": event_count,
+                    "venue_count": venue_count,
+                    "user_count": user_count,
+                    "venue_list": venue_list})
+
+def venue_events(request, venue_id):
+    venue = Venue.objects.get(id=venue_id)
+    events = venue.event_set.all()
+    if events:
+        return render(request, 'events/venue_events.html',
+        {
+            "events": events
+        })
+    else:
+        messages.success(request, ("That Venue Has No Events At All!"))
+        return redirect('admin-approval')
+    
+def show_event(request):
+    event = Event.objects.get(pk=event_id)
+    return render(request, 'events/show_event.html', 
+    {'event': event})
