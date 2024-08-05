@@ -121,7 +121,7 @@ def all_events(request):
     {'event_list': event_list})
 
 def add_event(request):
-   """ This adds an event """ 
+    """ This adds an event """ 
     submitted = False
     if request.method == 'POST':
         if request.user.is_superuser:
