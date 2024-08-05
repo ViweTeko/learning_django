@@ -18,8 +18,8 @@ from django.contrib.auth.models import User
 
 # HOME
 
-""" This is the home page """
 def home(request, year=datetime.now().year, month=datetime.now() .strftime('%B')):
+    """ This is the home page """
     name = "Viwe Teko"
     month = month.capitalize()
     month_num = int(list(calendar.month_name).index(month))
@@ -47,8 +47,8 @@ def home(request, year=datetime.now().year, month=datetime.now() .strftime('%B')
 
  # VENUES
 
-""" This is adds a venue """
 def add_venue(request):
+    """ This is adds a venue """
     submitted = False
     if request.method == 'POST':
         form = VenueForm(request.POST, request.FILES)
@@ -64,16 +64,16 @@ def add_venue(request):
     return render(request, 'events/add_venue.html',
     {'form': form, 'submitted': submitted})
 
-""" This shows a venue """
 def show_venue(request, venue_id):
+    """ This shows a venue """
     venue = Venue.objects.get(pk=venue_id)
     venue_owner = User.objects.get(pk=venue.owner)
     return render(request, 'events/show_venue.html',
     {'venue': venue,   
     'venue_owner': venue_owner})
 
-""" This shows a list of venues """
 def list_venues(request):
+    """ This shows a list of venues """
     venue_list = Venue.objects.all()
 
     p = Paginator(Venue.objects.all(), 10)
@@ -95,8 +95,8 @@ def search_venues(request):
         return render(request, 'events/search_venues.html',
         {})
 
-""" This updates a venue """
 def update_venue(request, venue_id):
+    """ This updates a venue """
     venue = Venue.objects.get(pk=venue_id)
     form = VenueForm(
         request.POST or None,
@@ -114,14 +114,14 @@ def update_venue(request, venue_id):
     'form': form})
 
 # EVENTS
-"""This is the list of events"""
 def all_events(request):
+    """This is the list of events"""
     event_list = Event.objects.all().order_by('event_date')
     return render(request, 'events/event_list.html',
     {'event_list': event_list})
 
-""" This adds an event """
 def add_event(request):
+   """ This adds an event """ 
     submitted = False
     if request.method == 'POST':
         if request.user.is_superuser:
@@ -147,8 +147,8 @@ def add_event(request):
     return render(request, 'events/add_event.html',
     {'form': form, 'submitted': submitted})
 
-"""This updates an event"""
 def update_event(request, event_id):
+    """This updates an event"""
     event = Event.objects.get(pk=event_id)
     form = EventForm(request.POST or None, instance=event)
     if form.is_valid():
@@ -159,8 +159,8 @@ def update_event(request, event_id):
     {'event': event,
     'form': form})
 
-"""This deletes an event"""
 def delete_event(request, event_id):
+    """This deletes an event"""
     event = Event.objects.get(pk=event_id)
     if request.user == event.manager:
         event.delete()
@@ -170,14 +170,14 @@ def delete_event(request, event_id):
         messages.success(request, 'You are not authorized to delete this event!')
         return redirect('list-events')
 
-"""This deletes a venue"""
 def delete_venue(request, venue_id):
+    """This deletes a venue"""
     venue = Venue.objects.get(pk=venue_id)
     venue.delete()
     return redirect('list-venues')
 
-""" This shows my events """
 def my_events(request):
+    """ This shows my events """
     if request.user.is_authenticated:
         me = request.user.id
         events = Event.objects.filter(attendees=me)
@@ -187,8 +187,8 @@ def my_events(request):
         messages.success(request, 'You are not authorized to view this page!')
         return redirect('home')
 
-""" This searches for an event """
 def search_events(request):
+    """ This searches for an event """
     if request.POST:
         searched = request.POST['searched']
         events = Events.objects.filter(name__icontains=searched)
@@ -199,10 +199,10 @@ def search_events(request):
         return render(request, 'events/search_events.html',
         {})
 
-
 # VENUE Downloads
-""" This will generate Text File List"""
+
 def venue_text(request):
+    """ This will generate Text File List"""
     response = HttpResponse(content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename="venue_list.txt"'
     venues = Venue.objects.all()
@@ -210,20 +210,20 @@ def venue_text(request):
         response.write(venue.name + '\n')
     return response
 
-""" This will generate Comma Separated Values (CSV) file"""
 def venue_csv(request):
+    """ This will generate Comma Separated Values (CSV) file"""
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="venue_list.csv"'
     writer = csv.writer(response)
-   
+
     venues = Venue.objects.all()
     writer.writerow(['Venue Name', 'Address', 'Zip Code', 'Web Address', 'Phone'])
     for venue in venues:
         writer.writerow(venue.name, venue.address, venue.zip_code, venue.web, venue.phone)
     return response
 
-"""This will generate PDF file"""
 def venue_pdf(request):
+    """This will generate PDF file"""
     buf = io.BytesIO()
     c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
     textobj = c.beginText()
@@ -251,6 +251,7 @@ def venue_pdf(request):
     return FileReponse(buf, as_attachment=True, filename='venue_list.pdf')
 
 def admin_approval(request):
+    """This will approve events"""
     venue_list = Venue.objects.all()
     event_count = Event.objects.all().count()
     venue_count = Venue.objects.all().count()
@@ -283,6 +284,7 @@ def admin_approval(request):
                     "venue_list": venue_list})
 
 def venue_events(request, venue_id):
+    """This will show venue events"""
     venue = Venue.objects.get(id=venue_id)
     events = venue.event_set.all()
     if events:
@@ -295,6 +297,7 @@ def venue_events(request, venue_id):
         return redirect('admin-approval')
     
 def show_event(request):
+    """This will show an event"""
     event = Event.objects.get(pk=event_id)
     return render(request, 'events/show_event.html', 
     {'event': event})
