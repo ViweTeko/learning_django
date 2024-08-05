@@ -1,3 +1,4 @@
+""" This script is the urls for the events app """
 from django.urls import path
 from . import views
 
